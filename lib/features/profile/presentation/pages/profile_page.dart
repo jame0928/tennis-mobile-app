@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/state/view_state.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../shared/ui/atoms/app_button.dart';
 import '../../../../shared/ui/atoms/inline_error_text.dart';
 import '../../../../shared/ui/atoms/skeleton_box.dart';
@@ -36,8 +37,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return Consumer<ProfileController>(
       builder: (context, controller, _) {
         final state = controller.state;
+        final l10n = context.l10n;
         return Scaffold(
-          appBar: AppBar(title: const Text('Profile')),
+          appBar: AppBar(title: Text(l10n.profileTitle)),
           body: Padding(
             padding: const EdgeInsets.all(16),
             child: switch (state.status) {
@@ -49,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               ViewStatus.failure => ErrorStateCard(
-                message: state.message ?? 'Error loading profile',
+                message: state.message ?? l10n.profileErrorLoading,
                 requestId: state.requestId,
                 onRetry: controller.load,
               ),
@@ -64,6 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildForm(ProfileController controller, Profile profile) {
+    final l10n = context.l10n;
     _firstNameController.text = profile.firstName;
     _lastNameController.text = profile.lastName;
     _displayNameController.text = profile.displayName ?? '';
@@ -75,31 +78,35 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           TextFormField(
             controller: _firstNameController,
-            decoration: const InputDecoration(labelText: 'First name'),
+            decoration: InputDecoration(labelText: l10n.profileFirstName),
             validator: (value) =>
-                (value == null || value.trim().isEmpty) ? 'Required' : null,
+              (value == null || value.trim().isEmpty)
+                ? l10n.commonRequired
+                : null,
           ),
           const SizedBox(height: 12),
           TextFormField(
             controller: _lastNameController,
-            decoration: const InputDecoration(labelText: 'Last name'),
+            decoration: InputDecoration(labelText: l10n.profileLastName),
             validator: (value) =>
-                (value == null || value.trim().isEmpty) ? 'Required' : null,
+              (value == null || value.trim().isEmpty)
+                ? l10n.commonRequired
+                : null,
           ),
           const SizedBox(height: 12),
           TextFormField(
             controller: _displayNameController,
-            decoration: const InputDecoration(labelText: 'Display name'),
+            decoration: InputDecoration(labelText: l10n.profileDisplayName),
           ),
           const SizedBox(height: 12),
           TextFormField(
             controller: _phoneController,
-            decoration: const InputDecoration(labelText: 'Phone'),
+            decoration: InputDecoration(labelText: l10n.profilePhone),
           ),
           InlineErrorText(controller.state.message),
           const SizedBox(height: 16),
           AppButton(
-            label: 'Save profile',
+            label: l10n.profileSave,
             onPressed: () {
               if (_formKey.currentState?.validate() != true) return;
               controller.save(
@@ -109,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 phone: _phoneController.text.trim(),
               );
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Profile update requested')),
+                SnackBar(content: Text(l10n.profileSavedMessage)),
               );
             },
           ),

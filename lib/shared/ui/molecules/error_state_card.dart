@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/l10n.dart';
 import '../atoms/app_button.dart';
 
 class ErrorStateCard extends StatelessWidget {
@@ -25,12 +26,12 @@ class ErrorStateCard extends StatelessWidget {
             if (requestId != null && requestId!.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(
-                'request_id: $requestId',
+                '${context.l10n.commonRequestId}: $requestId',
                 style: const TextStyle(fontSize: 12),
               ),
             ],
             const SizedBox(height: 12),
-            AppButton(label: 'Retry', onPressed: onRetry),
+            AppButton(label: context.l10n.commonRetry, onPressed: onRetry),
           ],
         ),
       ),

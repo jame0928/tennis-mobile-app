@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/l10n.dart';
+
 class SearchInput extends StatelessWidget {
   const SearchInput({
     super.key,
     required this.onSubmitted,
     this.initialValue,
-    this.hintText = 'Search',
+    this.hintText,
   });
 
   final void Function(String) onSubmitted;
   final String? initialValue;
-  final String hintText;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class SearchInput extends StatelessWidget {
       textInputAction: TextInputAction.search,
       onFieldSubmitted: onSubmitted,
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: hintText ?? context.l10n.tournamentsSearchHint,
         prefixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/state/view_state.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../shared/ui/atoms/app_button.dart';
 import '../../../../shared/ui/atoms/search_input.dart';
 import '../../../../shared/ui/atoms/status_badge.dart';
@@ -33,12 +34,13 @@ class _RegistrationsPageState extends State<RegistrationsPage> {
     return Consumer<RegistrationsController>(
       builder: (context, controller, _) {
         final state = controller.state;
+        final l10n = context.l10n;
         return ListTemplate(
-          title: 'My Registrations',
+          title: l10n.registrationsTitle,
           top: Column(
             children: [
               SearchInput(
-                hintText: 'Search payment reference',
+                hintText: l10n.registrationsSearchHint,
                 onSubmitted: (value) => controller.loadFirstPage(q: value),
               ),
               if (controller.feedbackMessage.isNotEmpty)
@@ -54,13 +56,13 @@ class _RegistrationsPageState extends State<RegistrationsPage> {
             ),
             ViewStatus.failure => Center(
               child: ErrorStateCard(
-                message: state.message ?? 'Unable to load registrations',
+                message: state.message ?? l10n.registrationsErrorLoading,
                 requestId: state.requestId,
                 onRetry: controller.loadFirstPage,
               ),
             ),
-            ViewStatus.empty => const Center(
-              child: EmptyStateCard(message: 'No registrations found'),
+            ViewStatus.empty => Center(
+              child: EmptyStateCard(message: l10n.registrationsEmpty),
             ),
             ViewStatus.success || ViewStatus.paginating => _RegistrationList(
               items: state.data ?? const [],
@@ -83,16 +85,17 @@ class _RegistrationsPageState extends State<RegistrationsPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
+        final l10n = dialogContext.l10n;
         return AlertDialog(
-          title: const Text('Withdraw registration'),
-          content: const Text('This action is destructive. Continue?'),
+          title: Text(l10n.registrationsWithdrawTitle),
+          content: Text(l10n.registrationsWithdrawConfirm),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Cancel'),
+              child: Text(l10n.commonCancel),
             ),
             AppButton(
-              label: 'Withdraw',
+              label: l10n.registrationsWithdraw,
               variant: AppButtonVariant.danger,
               onPressed: () => Navigator.of(dialogContext).pop(true),
             ),
@@ -124,6 +127,7 @@ class _RegistrationList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return ListView.builder(
       itemCount: items.length + 1,
       itemBuilder: (context, index) {
@@ -140,8 +144,12 @@ class _RegistrationList extends StatelessWidget {
         final registration = items[index];
         return Card(
           child: ListTile(
-            title: Text('Registration #${registration.id.substring(0, 8)}'),
-            subtitle: Text('Category: ${registration.tournamentCategoryId}'),
+            title: Text(
+              l10n.registrationsItemTitle(registration.id.substring(0, 8)),
+            ),
+            subtitle: Text(
+              l10n.registrationsCategory(registration.tournamentCategoryId),
+            ),
             trailing: Wrap(
               spacing: 8,
               children: [

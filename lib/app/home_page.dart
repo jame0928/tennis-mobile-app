@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
 import '../features/registrations/presentation/pages/registrations_page.dart';
 import '../features/schedule/presentation/pages/my_schedule_page.dart';
@@ -29,20 +30,23 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
         onDestinationSelected: (value) => setState(() => index = value),
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.emoji_events),
-            label: 'Tournaments',
+            icon: const Icon(Icons.emoji_events),
+            label: context.l10n.navTournaments,
           ),
           NavigationDestination(
-            icon: Icon(Icons.assignment),
-            label: 'Registrations',
+            icon: const Icon(Icons.assignment),
+            label: context.l10n.navRegistrations,
           ),
           NavigationDestination(
-            icon: Icon(Icons.calendar_month),
-            label: 'Schedule',
+            icon: const Icon(Icons.calendar_month),
+            label: context.l10n.navSchedule,
           ),
-          NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
+          NavigationDestination(
+            icon: const Icon(Icons.person),
+            label: context.l10n.navProfile,
+          ),
         ],
       ),
     );

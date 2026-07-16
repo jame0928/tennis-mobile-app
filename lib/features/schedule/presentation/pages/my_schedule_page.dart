@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/state/view_state.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../shared/ui/atoms/search_input.dart';
 import '../../../../shared/ui/atoms/status_badge.dart';
 import '../../../../shared/ui/molecules/empty_state_card.dart';
@@ -31,10 +32,11 @@ class _MySchedulePageState extends State<MySchedulePage> {
     return Consumer<ScheduleController>(
       builder: (context, controller, _) {
         final state = controller.myState;
+        final l10n = context.l10n;
         return ListTemplate(
-          title: 'My Schedule',
+          title: l10n.scheduleMyTitle,
           top: SearchInput(
-            hintText: 'Search by court, round, score',
+            hintText: l10n.scheduleMySearchHint,
             onSubmitted: (value) => controller.loadMySchedule(q: value),
           ),
           body: switch (state.status) {
@@ -43,13 +45,13 @@ class _MySchedulePageState extends State<MySchedulePage> {
             ),
             ViewStatus.failure => Center(
               child: ErrorStateCard(
-                message: state.message ?? 'Unable to load schedule',
+                message: state.message ?? l10n.scheduleErrorLoading,
                 requestId: state.requestId,
                 onRetry: controller.loadMySchedule,
               ),
             ),
-            ViewStatus.empty => const Center(
-              child: EmptyStateCard(message: 'No scheduled matches'),
+            ViewStatus.empty => Center(
+              child: EmptyStateCard(message: l10n.scheduleMyEmpty),
             ),
             ViewStatus.success || ViewStatus.paginating => _ScheduleList(
               items: state.data ?? const [],
@@ -69,14 +71,15 @@ class _ScheduleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) {
         final item = items[index];
         return Card(
           child: ListTile(
-            title: Text(item.roundName ?? 'Round unknown'),
-            subtitle: Text(item.courtName ?? 'Court TBD'),
+            title: Text(item.roundName ?? l10n.scheduleRoundUnknown),
+            subtitle: Text(item.courtName ?? l10n.scheduleCourtTbd),
             trailing: StatusBadge(label: item.status),
           ),
         );

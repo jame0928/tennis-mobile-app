@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../app/router.dart';
 import '../../../../core/network/api_exception.dart';
 import '../../../../core/network/error_mapper.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../registrations/presentation/registrations_controller.dart';
 import '../../../../shared/ui/atoms/app_button.dart';
 import '../../../../shared/ui/atoms/status_badge.dart';
@@ -51,9 +52,10 @@ class _TournamentDetailPageState extends State<TournamentDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     if (error != null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Tournament detail')),
+        appBar: AppBar(title: Text(l10n.tournamentDetailTitle)),
         body: Center(
           child: ErrorStateCard(
             message: error!,
@@ -75,19 +77,23 @@ class _TournamentDetailPageState extends State<TournamentDetailPage> {
         children: [
           StatusBadge(label: tournament!.status),
           const SizedBox(height: 12),
-          Text(tournament!.description ?? 'No description.'),
+          Text(tournament!.description ?? l10n.tournamentNoDescription),
           const SizedBox(height: 12),
-          Text('Venue: ${tournament!.venue ?? 'Not specified'}'),
+          Text(
+            l10n.tournamentVenue(
+              tournament!.venue ?? l10n.tournamentVenueNotSpecified,
+            ),
+          ),
         ],
       ),
       actions: [
         AppButton(
-          label: 'Register now',
+          label: l10n.tournamentRegisterNow,
           onPressed: _showRegistrationDialog,
         ),
         const SizedBox(height: 8),
         AppButton(
-          label: 'View schedule',
+          label: l10n.tournamentViewSchedule,
           onPressed: () {
             Navigator.of(context).pushNamed(
               AppRouter.tournamentSchedule,
@@ -106,21 +112,22 @@ class _TournamentDetailPageState extends State<TournamentDetailPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
+        final l10n = dialogContext.l10n;
         return AlertDialog(
-          title: const Text('Create registration'),
+          title: Text(l10n.tournamentCreateRegistration),
           content: TextField(
             controller: categoryController,
-            decoration: const InputDecoration(
-              labelText: 'Tournament category id',
+            decoration: InputDecoration(
+              labelText: l10n.tournamentCategoryId,
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Cancel'),
+              child: Text(l10n.commonCancel),
             ),
             AppButton(
-              label: 'Register',
+              label: l10n.tournamentRegister,
               onPressed: () => Navigator.of(dialogContext).pop(true),
             ),
           ],

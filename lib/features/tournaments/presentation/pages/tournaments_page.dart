@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../app/router.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../core/state/view_state.dart';
 import '../../../../shared/ui/atoms/search_input.dart';
 import '../../../../shared/ui/atoms/status_badge.dart';
@@ -36,11 +37,12 @@ class _TournamentsPageState extends State<TournamentsPage> {
     return Consumer<TournamentsController>(
       builder: (context, controller, _) {
         final state = controller.state;
+        final l10n = context.l10n;
         return ListTemplate(
-          title: 'Tournaments',
+          title: l10n.tournamentsTitle,
           top: SearchInput(
             initialValue: controller.searchQuery,
-            hintText: 'Search tournaments',
+            hintText: l10n.tournamentsSearchHint,
             onSubmitted: (value) => controller.loadFirstPage(query: value),
           ),
           body: switch (state.status) {
@@ -49,13 +51,13 @@ class _TournamentsPageState extends State<TournamentsPage> {
             ),
             ViewStatus.failure => Center(
               child: ErrorStateCard(
-                message: state.message ?? 'Unable to load tournaments',
+                message: state.message ?? l10n.tournamentsErrorLoading,
                 requestId: state.requestId,
                 onRetry: controller.loadFirstPage,
               ),
             ),
-            ViewStatus.empty => const Center(
-              child: EmptyStateCard(message: 'No tournaments found'),
+            ViewStatus.empty => Center(
+              child: EmptyStateCard(message: l10n.tournamentsEmpty),
             ),
             ViewStatus.success || ViewStatus.paginating => _TournamentList(
               items: state.data ?? const [],
@@ -86,6 +88,7 @@ class _TournamentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return ListView.builder(
       itemCount: items.length + 1,
       itemBuilder: (context, index) {
@@ -102,7 +105,7 @@ class _TournamentList extends StatelessWidget {
         return Card(
           child: ListTile(
             title: Text(tournament.name),
-            subtitle: Text(tournament.venue ?? 'Unknown venue'),
+            subtitle: Text(tournament.venue ?? l10n.tournamentsUnknownVenue),
             trailing: StatusBadge(label: tournament.status),
             onTap: () {
               Navigator.of(

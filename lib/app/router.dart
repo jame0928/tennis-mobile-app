@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../features/schedule/presentation/pages/tournament_schedule_page.dart';
 import '../features/tournaments/presentation/pages/tournament_detail_page.dart';
 import 'home_page.dart';
@@ -25,8 +26,8 @@ class AppRouter {
         );
       default:
         return MaterialPageRoute(
-          builder: (_) =>
-              const Scaffold(body: Center(child: Text('Route not found'))),
+          builder: (context) =>
+              Scaffold(body: Center(child: Text(context.l10n.routeNotFound))),
         );
     }
   }

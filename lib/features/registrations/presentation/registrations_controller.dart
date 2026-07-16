@@ -73,15 +73,15 @@ class RegistrationsController extends ChangeNotifier {
         tournamentId: tournamentId,
         tournamentCategoryId: categoryId,
       );
-      feedbackMessage = 'Registration created';
+      feedbackMessage = 'Inscripcion creada';
       await loadFirstPage();
     } on ApiException catch (e) {
       final failure = errorMapper.fromApiException(e);
       if (failure.type == FailureType.conflict) {
-        feedbackMessage = 'Conflict: duplicate or category full.';
+        feedbackMessage = 'Conflicto: inscripcion duplicada o categoria llena.';
       } else if (failure.type == FailureType.businessRule) {
         feedbackMessage =
-            'Business rule violation: registration window closed.';
+            'Regla de negocio: la ventana de inscripcion esta cerrada.';
       } else {
         feedbackMessage = failure.message;
       }
@@ -92,12 +92,13 @@ class RegistrationsController extends ChangeNotifier {
   Future<void> withdraw(String registrationId) async {
     try {
       await withdrawRegistration(registrationId);
-      feedbackMessage = 'Registration withdrawn';
+      feedbackMessage = 'Inscripcion retirada';
       await loadFirstPage();
     } on ApiException catch (e) {
       final failure = errorMapper.fromApiException(e);
       if (failure.type == FailureType.businessRule) {
-        feedbackMessage = 'Cannot withdraw in the current tournament status.';
+        feedbackMessage =
+            'No se puede retirar en el estado actual del torneo.';
       } else {
         feedbackMessage = failure.message;
       }

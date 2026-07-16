@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/network/error_mapper.dart';
 import '../../../../core/state/view_state.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../shared/ui/atoms/search_input.dart';
 import '../../../../shared/ui/atoms/status_badge.dart';
 import '../../../../shared/ui/molecules/empty_state_card.dart';
@@ -37,11 +38,12 @@ class _TournamentSchedulePageState extends State<TournamentSchedulePage> {
       builder: (context, controller, _) {
         final state = controller.tournamentState;
         final mapper = context.read<ErrorMapper>();
+        final l10n = context.l10n;
 
         return ListTemplate(
-          title: 'Tournament Schedule',
+          title: l10n.scheduleTournamentTitle,
           top: SearchInput(
-            hintText: 'Search by round/court',
+            hintText: l10n.scheduleTournamentSearchHint,
             onSubmitted: (value) => controller.loadTournamentSchedule(
               tournamentId: widget.tournamentId,
               q: value,
@@ -60,8 +62,8 @@ class _TournamentSchedulePageState extends State<TournamentSchedulePage> {
                 ),
               ),
             ),
-            ViewStatus.empty => const Center(
-              child: EmptyStateCard(message: 'No schedule entries found'),
+            ViewStatus.empty => Center(
+              child: EmptyStateCard(message: l10n.scheduleTournamentEmpty),
             ),
             ViewStatus.success || ViewStatus.paginating =>
               _TournamentScheduleList(items: state.data ?? const []),
@@ -73,11 +75,14 @@ class _TournamentSchedulePageState extends State<TournamentSchedulePage> {
   }
 
   String _messageForVisibility(String original, ErrorMapper mapper) {
-    if (original.contains('access')) {
-      return 'Schedule visibility is restricted for your account.';
+    final l10n = context.l10n;
+    if (original.toLowerCase().contains('access') ||
+        original.toLowerCase().contains('acceso')) {
+      return l10n.scheduleVisibilityRestricted;
     }
-    if (original.contains('not found')) {
-      return 'Tournament schedule not found.';
+    if (original.toLowerCase().contains('not found') ||
+        original.toLowerCase().contains('no encontrado')) {
+      return l10n.scheduleNotFound;
     }
     return original;
   }
@@ -90,14 +95,15 @@ class _TournamentScheduleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) {
         final item = items[index];
         return Card(
           child: ListTile(
-            title: Text(item.roundName ?? 'Round unknown'),
-            subtitle: Text(item.courtName ?? 'Court TBD'),
+            title: Text(item.roundName ?? l10n.scheduleRoundUnknown),
+            subtitle: Text(item.courtName ?? l10n.scheduleCourtTbd),
             trailing: StatusBadge(label: item.status),
           ),
         );

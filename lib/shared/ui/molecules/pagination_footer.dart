@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/l10n.dart';
 import '../atoms/app_button.dart';
 
 class PaginationFooter extends StatelessWidget {
@@ -17,9 +18,9 @@ class PaginationFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!hasMore) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 12),
-        child: Text('No more items'),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Text(context.l10n.commonNoMoreItems),
       );
     }
 
@@ -27,7 +28,7 @@ class PaginationFooter extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: loading
           ? const CircularProgressIndicator()
-          : AppButton(label: 'Load more', onPressed: onLoadMore),
+          : AppButton(label: context.l10n.commonLoadMore, onPressed: onLoadMore),
     );
   }
 }

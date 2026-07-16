@@ -10,7 +10,7 @@ class AppEnvironment {
       case Environment.production:
         return 'https://api.example.com';
       case Environment.staging:
-        return 'https://staging-api.example.com';
+        return 'https://kitten-casualty-thousand.ngrok-free.dev';
     }
   }
 }

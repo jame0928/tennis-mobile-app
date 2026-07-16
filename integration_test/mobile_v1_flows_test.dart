@@ -9,17 +9,17 @@ void main() {
     await tester.pumpWidget(const TennisApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('Tournaments'), findsOneWidget);
+    expect(find.text('Torneos'), findsOneWidget);
 
-    await tester.tap(find.text('Registrations'));
+    await tester.tap(find.text('Inscripciones'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Schedule'));
+    await tester.tap(find.text('Calendario'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Profile'));
+    await tester.tap(find.text('Perfil'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Save profile'), findsOneWidget);
+    expect(find.text('Guardar perfil'), findsOneWidget);
   });
 }

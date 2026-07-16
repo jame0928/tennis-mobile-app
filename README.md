@@ -15,3 +15,12 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Localization Checklist
+
+Before merging UI copy changes, verify:
+
+- All new user-facing text uses localization resources in `lib/l10n/*.arb`.
+- No hardcoded English/Spanish literals are introduced in widgets/screens.
+- Widget tests assert core Spanish labels in navigation and primary actions.
+- `flutter analyze` and `flutter test` pass after localization updates.

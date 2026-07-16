@@ -7,10 +7,10 @@ void main() {
     await tester.pumpWidget(const TennisApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('Tournaments'), findsWidgets);
-    expect(find.text('Registrations'), findsOneWidget);
-    expect(find.text('Schedule'), findsOneWidget);
-    expect(find.text('Profile'), findsOneWidget);
+    expect(find.text('Torneos'), findsWidgets);
+    expect(find.text('Inscripciones'), findsOneWidget);
+    expect(find.text('Calendario'), findsOneWidget);
+    expect(find.text('Perfil'), findsOneWidget);
   });
 
   testWidgets('preserves tab state when returning', (
@@ -19,17 +19,17 @@ void main() {
     await tester.pumpWidget(const TennisApp());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Profile'));
+    await tester.tap(find.text('Perfil'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Profile'), findsWidgets);
+    expect(find.text('Perfil'), findsWidgets);
 
-    await tester.tap(find.text('Tournaments'));
+    await tester.tap(find.text('Torneos'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Profile'));
+    await tester.tap(find.text('Perfil'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Profile'), findsWidgets);
+    expect(find.text('Perfil'), findsWidgets);
   });
 }

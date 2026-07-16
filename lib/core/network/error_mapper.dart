@@ -30,42 +30,42 @@ class ErrorMapper {
       case 'UNAUTHENTICATED':
         return AppFailure(
           type: FailureType.unauthenticated,
-          message: 'Your session expired. Please login again.',
+          message: 'Tu sesion expiro. Inicia sesion nuevamente.',
           requestId: exception.requestId,
           code: exception.code,
         );
       case 'FORBIDDEN':
         return AppFailure(
           type: FailureType.forbidden,
-          message: 'You do not have access to this resource.',
+          message: 'No tienes acceso a este recurso.',
           requestId: exception.requestId,
           code: exception.code,
         );
       case 'NOT_FOUND':
         return AppFailure(
           type: FailureType.notFound,
-          message: 'Resource not found.',
+          message: 'Recurso no encontrado.',
           requestId: exception.requestId,
           code: exception.code,
         );
       case 'CONFLICT':
         return AppFailure(
           type: FailureType.conflict,
-          message: 'The action conflicts with current state.',
+          message: 'La accion entra en conflicto con el estado actual.',
           requestId: exception.requestId,
           code: exception.code,
         );
       case 'BUSINESS_RULE_VIOLATION':
         return AppFailure(
           type: FailureType.businessRule,
-          message: 'This action violates a business rule.',
+          message: 'Esta accion viola una regla de negocio.',
           requestId: exception.requestId,
           code: exception.code,
         );
       case 'VALIDATION_ERROR':
         return AppFailure(
           type: FailureType.validation,
-          message: 'Submitted data is invalid.',
+          message: 'Los datos enviados no son validos.',
           requestId: exception.requestId,
           code: exception.code,
         );

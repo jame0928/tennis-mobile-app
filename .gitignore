@@ -11,6 +11,7 @@
 .svn/
 .swiftpm/
 .github/
+.opencode/
 openspec/
 migrate_working_dir/
 

@@ -1,0 +1,120 @@
+{
+  "info": {
+    "name": "Next Tennis Consumer API",
+    "_postman_id": "7e58b1ab-2cc6-48f0-b9fd-9bc0db74aa6b",
+    "description": "Functional consumer collection aligned with contracts/openapi-consumer.yaml",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "bearerToken", "value": "" },
+    { "key": "tournamentId", "value": "00000000-0000-0000-0000-000000000000" },
+    { "key": "registrationId", "value": "00000000-0000-0000-0000-000000000000" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{bearerToken}}", "type": "string" }
+    ]
+  },
+  "item": [
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/me"
+          }
+        },
+        {
+          "name": "Patch Me",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_name\": \"Jugador Demo\",\n  \"phone\": \"+57 300 0000000\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tournaments",
+      "item": [
+        {
+          "name": "List Tournaments",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tournaments?limit=10&q=open"
+          }
+        },
+        {
+          "name": "Get Tournament By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tournaments/{{tournamentId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Registrations",
+      "item": [
+        {
+          "name": "Create Registration",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tournament_category_id\": \"00000000-0000-0000-0000-000000000000\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/tournaments/{{tournamentId}}/registrations"
+          }
+        },
+        {
+          "name": "List My Registrations",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/me/registrations?state=all&limit=10&q=ref"
+          }
+        },
+        {
+          "name": "Delete My Registration",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/me/registrations/{{registrationId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schedule",
+      "item": [
+        {
+          "name": "List My Schedule",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/me/schedule?limit=10&q=court"
+          }
+        },
+        {
+          "name": "List Tournament Schedule",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tournaments/{{tournamentId}}/schedule?limit=10&q=final"
+          }
+        }
+      ]
+    }
+  ]
+}

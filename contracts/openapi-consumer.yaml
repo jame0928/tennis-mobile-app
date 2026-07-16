@@ -1,0 +1,624 @@
+openapi: 3.0.3
+info:
+  title: Next Tennis Consumer API
+  version: 1.0.0
+  description: Consumer-facing API contract for mobile and external clients.
+servers:
+  - url: https://api.example.com
+    description: Production
+  - url: https://staging-api.example.com
+    description: Staging
+security:
+  - bearerAuth: []
+tags:
+  - name: Profile
+  - name: Tournaments
+  - name: Registrations
+  - name: Schedule
+paths:
+  /api/v1/me:
+    get:
+      tags: [Profile]
+      summary: Get authenticated user profile
+      operationId: getMe
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseProfile'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    patch:
+      tags: [Profile]
+      summary: Update authenticated user profile
+      operationId: patchMe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+      responses:
+        '200':
+          description: Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseProfile'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/v1/tournaments:
+    get:
+      tags: [Tournaments]
+      summary: List public tournaments
+      operationId: listTournaments
+      parameters:
+        - $ref: '#/components/parameters/Q'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Cursor'
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [registration_open, registration_closed, in_progress, draft, completed, cancelled]
+        - in: query
+          name: academy_slug
+          schema:
+            type: string
+        - in: query
+          name: start_from
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: start_to
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Tournament list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseTournamentList'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+  /api/v1/tournaments/{tournamentId}:
+    get:
+      tags: [Tournaments]
+      summary: Get tournament detail
+      operationId: getTournamentById
+      parameters:
+        - $ref: '#/components/parameters/TournamentId'
+      responses:
+        '200':
+          description: Tournament detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseTournament'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/tournaments/{tournamentId}/registrations:
+    post:
+      tags: [Registrations]
+      summary: Register authenticated user in tournament category
+      operationId: createRegistration
+      parameters:
+        - $ref: '#/components/parameters/TournamentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRegistrationRequest'
+      responses:
+        '201':
+          description: Registration created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseRegistration'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/BusinessRuleViolation'
+  /api/v1/me/registrations:
+    get:
+      tags: [Registrations]
+      summary: List own registrations
+      operationId: listMyRegistrations
+      parameters:
+        - $ref: '#/components/parameters/Q'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Cursor'
+        - in: query
+          name: state
+          schema:
+            type: string
+            enum: [active, past, all]
+            default: all
+        - in: query
+          name: payment_status
+          schema:
+            type: string
+            enum: [pending, paid, refunded, waived]
+        - in: query
+          name: tournament_status
+          schema:
+            type: string
+            enum: [draft, registration_open, registration_closed, in_progress, completed, cancelled]
+      responses:
+        '200':
+          description: Own registrations list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseRegistrationList'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/v1/me/registrations/{registrationId}:
+    delete:
+      tags: [Registrations]
+      summary: Withdraw own registration
+      operationId: deleteMyRegistration
+      parameters:
+        - $ref: '#/components/parameters/RegistrationId'
+      responses:
+        '200':
+          description: Registration withdrawn
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseRegistrationStatus'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/BusinessRuleViolation'
+  /api/v1/me/schedule:
+    get:
+      tags: [Schedule]
+      summary: List own match schedule
+      operationId: listMySchedule
+      parameters:
+        - $ref: '#/components/parameters/Q'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Cursor'
+        - in: query
+          name: from
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: to
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [pending, scheduled, draft_scheduled, in_progress, completed, walkover, cancelled, postponed]
+        - in: query
+          name: tournament_id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Own schedule list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseScheduleList'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/v1/tournaments/{tournamentId}/schedule:
+    get:
+      tags: [Schedule]
+      summary: List tournament schedule
+      operationId: listTournamentSchedule
+      parameters:
+        - $ref: '#/components/parameters/TournamentId'
+        - $ref: '#/components/parameters/Q'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Cursor'
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: court_id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [pending, scheduled, draft_scheduled, in_progress, completed, walkover, cancelled, postponed]
+      responses:
+        '200':
+          description: Tournament schedule list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseScheduleList'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    TournamentId:
+      in: path
+      name: tournamentId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    RegistrationId:
+      in: path
+      name: registrationId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    Q:
+      in: query
+      name: q
+      schema:
+        type: string
+      description: Search text for principal model text fields.
+    Limit:
+      in: query
+      name: limit
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+      description: Page size. Defaults to 10.
+    Cursor:
+      in: query
+      name: cursor
+      schema:
+        type: string
+      description: Opaque cursor for next page.
+  responses:
+    Unauthenticated:
+      description: Missing or invalid token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient scope or unauthorized access
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ValidationError:
+      description: Invalid input or query parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Conflict:
+      description: Business conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BusinessRuleViolation:
+      description: Business rule violation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    MetaPagination:
+      type: object
+      properties:
+        request_id:
+          type: string
+        has_more:
+          type: boolean
+        next_cursor:
+          type: string
+          nullable: true
+        limit:
+          type: integer
+    ErrorObject:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          nullable: true
+    ErrorResponse:
+      type: object
+      required: [success, error, request_id]
+      properties:
+        success:
+          type: boolean
+          enum: [false]
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+    Profile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+        last_name:
+          type: string
+        display_name:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        gender:
+          type: string
+          nullable: true
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        avatar_url:
+          type: string
+          nullable: true
+    Tournament:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        venue:
+          type: string
+          nullable: true
+        status:
+          type: string
+    Registration:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tournament_category_id:
+          type: string
+          format: uuid
+        profile_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+        payment_status:
+          type: string
+    ScheduleMatch:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        round_name:
+          type: string
+          nullable: true
+        match_number:
+          type: integer
+          nullable: true
+        status:
+          type: string
+        score_summary:
+          type: string
+          nullable: true
+        scheduled_at:
+          type: string
+          format: date-time
+          nullable: true
+        court_name:
+          type: string
+          nullable: true
+    SuccessResponseProfile:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          $ref: '#/components/schemas/Profile'
+        meta:
+          type: object
+          properties:
+            request_id:
+              type: string
+    SuccessResponseTournament:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          $ref: '#/components/schemas/Tournament'
+        meta:
+          type: object
+          properties:
+            request_id:
+              type: string
+    SuccessResponseTournamentList:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tournament'
+        meta:
+          allOf:
+            - $ref: '#/components/schemas/MetaPagination'
+    SuccessResponseRegistration:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          $ref: '#/components/schemas/Registration'
+        meta:
+          type: object
+          properties:
+            request_id:
+              type: string
+    SuccessResponseRegistrationStatus:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            status:
+              type: string
+            updated_at:
+              type: string
+              format: date-time
+        meta:
+          type: object
+          properties:
+            request_id:
+              type: string
+    SuccessResponseRegistrationList:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Registration'
+        meta:
+          allOf:
+            - $ref: '#/components/schemas/MetaPagination'
+    SuccessResponseScheduleList:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduleMatch'
+        meta:
+          allOf:
+            - $ref: '#/components/schemas/MetaPagination'
+    UpdateProfileRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        display_name:
+          type: string
+          nullable: true
+        phone:
+          type: string
+        avatar_url:
+          type: string
+          format: uri
+          nullable: true
+    CreateRegistrationRequest:
+      type: object
+      additionalProperties: false
+      required: [tournament_category_id]
+      properties:
+        tournament_category_id:
+          type: string
+          format: uuid
+        payment_proof_url:
+          type: string
+          format: uri
+          nullable: true
+        partner_id:
+          type: string
+          format: uuid
+          nullable: true

@@ -84,3 +84,62 @@ This document describes the functional behavior of screens that consume the API 
 - All list endpoints use server-side filtering and pagination.
 - All private screens require bearer authentication.
 - Error payload rendering should use error.code and request_id for support traces.
+
+## v1.1 New Screens
+
+## 9. Auth Login Screen v1.1
+
+- Resources:
+  - POST /api/v1.1/auth/login
+  - POST /api/v1.1/auth/refresh
+  - POST /api/v1.1/auth/logout
+  - GET /api/v1.1/auth/session
+- Actions:
+  - Authenticate with facade endpoint and persist access/refresh tokens.
+  - Refresh session on token expiration.
+  - Render explicit auth errors without exposing provider internals.
+- Expected behavior:
+  - Successful login returns session payload in standard envelope.
+  - Invalid credentials render 401 auth error state.
+
+## 10. Public Tournaments Directory Screen v1.1
+
+- Resources:
+  - GET /api/v1.1/tournaments
+  - GET /api/v1.1/tournaments/{tournamentId}
+- Actions:
+  - Browse tournaments without login requirement.
+  - Navigate from list to detail with same filters/search criteria.
+- Expected behavior:
+  - Public users can see discoverable tournaments and details.
+  - Not found responses render empty/error states with request_id support trace.
+
+## 11. Rankings Screen v1.1
+
+- Resources:
+  - GET /api/v1.1/rankings
+  - GET /api/v1.1/rankings/{rankingId}
+- Actions:
+  - List rankings by ranking_type/category/gender filters.
+  - Inspect ranking detail entries and points metadata.
+- Expected behavior:
+  - Results are paginated with deterministic order.
+  - UI preserves filter state between list and detail navigation.
+
+## 12. Academies Discovery Screen v1.1
+
+- Resources:
+  - GET /api/v1.1/academies
+  - GET /api/v1.1/academies/{academyId}
+- Actions:
+  - Discover academies by text, city, and country filters.
+  - Open academy detail with contact/location metadata.
+- Expected behavior:
+  - Public-read behavior is available without authentication.
+  - Non-existing academy id returns not-found state.
+
+## v1.1 Cross-Screen Rules
+
+- Auth facade endpoints are the only supported authentication surface for consumer clients in v1.1.
+- Public-read endpoints in v1.1: tournaments list/detail, rankings list/detail, academies list/detail.
+- Private endpoints remain token-protected and follow the same envelope/error handling model.

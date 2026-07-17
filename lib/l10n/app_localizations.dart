@@ -110,6 +110,18 @@ abstract class AppLocalizations {
   /// **'Torneos'**
   String get navTournaments;
 
+  /// No description provided for @navRankings.
+  ///
+  /// In en, this message translates to:
+  /// **'Rankings'**
+  String get navRankings;
+
+  /// No description provided for @navAcademies.
+  ///
+  /// In en, this message translates to:
+  /// **'Academias'**
+  String get navAcademies;
+
   /// No description provided for @navRegistrations.
   ///
   /// In en, this message translates to:
@@ -127,6 +139,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Perfil'**
   String get navProfile;
+
+  /// No description provided for @navLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get navLogin;
 
   /// No description provided for @routeNotFound.
   ///
@@ -175,6 +193,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Campo obligatorio'**
   String get commonRequired;
+
+  /// No description provided for @authGuardRedirectingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Se requiere iniciar sesion. Redirigiendo...'**
+  String get authGuardRedirectingMessage;
 
   /// No description provided for @statusUnknown.
   ///
@@ -559,6 +583,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancha por definir'**
   String get scheduleCourtTbd;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Iniciar sesion'**
+  String get loginTitle;
+
+  /// No description provided for @loginEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Correo electronico'**
+  String get loginEmail;
+
+  /// No description provided for @loginPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Contrasena'**
+  String get loginPassword;
+
+  /// No description provided for @loginSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Ingresar'**
+  String get loginSubmit;
+
+  /// No description provided for @loginSubmitting.
+  ///
+  /// In en, this message translates to:
+  /// **'Ingresando...'**
+  String get loginSubmitting;
+
+  /// No description provided for @loginInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Correo invalido'**
+  String get loginInvalidEmail;
+
+  /// No description provided for @loginInvalidSession.
+  ///
+  /// In en, this message translates to:
+  /// **'No se pudo validar la sesion. Intenta nuevamente.'**
+  String get loginInvalidSession;
+
+  /// No description provided for @rankingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rankings'**
+  String get rankingsTitle;
+
+  /// No description provided for @rankingsSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buscar rankings'**
+  String get rankingsSearchHint;
+
+  /// No description provided for @rankingsErrorLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'No se pudieron cargar los rankings'**
+  String get rankingsErrorLoading;
+
+  /// No description provided for @rankingsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No se encontraron rankings'**
+  String get rankingsEmpty;
+
+  /// No description provided for @rankingsDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Detalle del ranking'**
+  String get rankingsDetailTitle;
+
+  /// No description provided for @rankingsTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tipo'**
+  String get rankingsTypeLabel;
+
+  /// No description provided for @rankingsCategoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Categoria'**
+  String get rankingsCategoryLabel;
+
+  /// No description provided for @rankingsEntriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Entradas'**
+  String get rankingsEntriesTitle;
+
+  /// No description provided for @academiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Academias'**
+  String get academiesTitle;
+
+  /// No description provided for @academiesSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buscar academias'**
+  String get academiesSearchHint;
+
+  /// No description provided for @academiesErrorLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'No se pudieron cargar las academias'**
+  String get academiesErrorLoading;
+
+  /// No description provided for @academiesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No se encontraron academias'**
+  String get academiesEmpty;
+
+  /// No description provided for @academiesDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Detalle de academia'**
+  String get academiesDetailTitle;
+
+  /// No description provided for @academiesUnknownLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Ubicacion no disponible'**
+  String get academiesUnknownLocation;
+
+  /// No description provided for @academiesEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get academiesEmailLabel;
+
+  /// No description provided for @academiesPhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Telefono'**
+  String get academiesPhoneLabel;
+
+  /// No description provided for @academiesAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Direccion'**
+  String get academiesAddressLabel;
 
   /// No description provided for @errorSessionExpired.
   ///

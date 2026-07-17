@@ -1,4 +1,5 @@
 import '../../../../core/network/api_client.dart';
+import '../../../../core/config/api_paths.dart';
 import '../../../../core/network/pagination_meta.dart';
 import '../../domain/entities/tournament.dart';
 import '../query/tournament_query.dart';
@@ -12,8 +13,9 @@ class TournamentRemoteDataSource {
     TournamentQuery query,
   ) async {
     final response = await client.get(
-      '/api/v1/tournaments',
+      ApiPaths.tournaments(),
       query: query.toParams(),
+      authenticated: false,
     );
     final list = (response.data as List<dynamic>)
         .map((json) => _fromJson(json as Map<String, dynamic>))
@@ -23,7 +25,7 @@ class TournamentRemoteDataSource {
 
   Future<Tournament> getTournament(String id) async {
     final response = await client.get(
-      '/api/v1/tournaments/$id',
+      ApiPaths.tournamentDetail(id),
       authenticated: false,
     );
     return _fromJson(response.data as Map<String, dynamic>);

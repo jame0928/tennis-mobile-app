@@ -1,4 +1,5 @@
 import '../../../../core/network/api_client.dart';
+import '../../../../core/config/api_paths.dart';
 import '../dto/profile_dto.dart';
 
 class ProfileRemoteDataSource {
@@ -7,7 +8,7 @@ class ProfileRemoteDataSource {
   final ApiClient client;
 
   Future<ProfileDto> getProfile() async {
-    final response = await client.get('/api/v1/me');
+    final response = await client.get(ApiPaths.me());
     return ProfileDto.fromJson(response.data as Map<String, dynamic>);
   }
 
@@ -27,7 +28,7 @@ class ProfileRemoteDataSource {
     }..removeWhere((_, value) => value == null);
 
     final response = await client.patch(
-      '/api/v1/me',
+      ApiPaths.me(),
       body: body,
     );
     return ProfileDto.fromJson(response.data as Map<String, dynamic>);

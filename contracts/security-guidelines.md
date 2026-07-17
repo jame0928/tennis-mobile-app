@@ -3,6 +3,8 @@
 ## Authentication and Authorization
 
 - Use bearer JWT tokens from trusted authentication flow.
+- For API v1.1, consumer clients SHOULD authenticate through `/api/v1.1/auth/*` facade endpoints.
+- Consumer clients MUST NOT call Supabase auth endpoints directly in v1.1 integration flows.
 - Send token only in Authorization header.
 - Never send profile_id in private endpoint payloads; identity is token-derived.
 - Respect endpoint scope model:
@@ -45,6 +47,7 @@
 ## Consumer Security Checklist
 
 - Token stored securely and refreshed safely.
+- Auth facade flow (`/api/v1.1/auth/*`) is used instead of direct provider calls.
 - HTTPS enforced in all configured environments.
 - Error handling implemented with request_id capture.
 - No sensitive values in logs or crash reports.

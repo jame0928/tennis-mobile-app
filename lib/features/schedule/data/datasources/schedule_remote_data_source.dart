@@ -1,4 +1,5 @@
 import '../../../../core/network/api_client.dart';
+import '../../../../core/config/api_paths.dart';
 import '../../../../core/network/pagination_meta.dart';
 import '../../domain/entities/schedule_match.dart';
 import '../query/schedule_query.dart';
@@ -12,7 +13,7 @@ class ScheduleRemoteDataSource {
     ScheduleQuery query,
   ) async {
     final response = await client.get(
-      '/api/v1/me/schedule',
+      ApiPaths.mySchedule(),
       query: query.toParams(),
     );
     final list = (response.data as List<dynamic>)
@@ -26,7 +27,7 @@ class ScheduleRemoteDataSource {
     required ScheduleQuery query,
   }) async {
     final response = await client.get(
-      '/api/v1/tournaments/$tournamentId/schedule',
+      ApiPaths.tournamentSchedule(tournamentId),
       query: query.toParams(isTournamentSchedule: true),
     );
     final list = (response.data as List<dynamic>)

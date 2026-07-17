@@ -1,15 +1,18 @@
 {
   "info": {
-    "name": "Next Tennis Consumer API",
+    "name": "Next Tennis Consumer API v1 and v1.1",
     "_postman_id": "7e58b1ab-2cc6-48f0-b9fd-9bc0db74aa6b",
-    "description": "Functional consumer collection aligned with contracts/openapi-consumer.yaml",
+    "description": "Functional consumer collection aligned with contracts/openapi-consumer.yaml and contracts/openapi-consumer-v1.1.yaml",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:3000" },
     { "key": "bearerToken", "value": "" },
+    { "key": "refreshToken", "value": "" },
     { "key": "tournamentId", "value": "00000000-0000-0000-0000-000000000000" },
-    { "key": "registrationId", "value": "00000000-0000-0000-0000-000000000000" }
+    { "key": "registrationId", "value": "00000000-0000-0000-0000-000000000000" },
+    { "key": "rankingId", "value": "00000000-0000-0000-0000-000000000000" },
+    { "key": "academyId", "value": "00000000-0000-0000-0000-000000000000" }
   ],
   "auth": {
     "type": "bearer",
@@ -19,7 +22,56 @@
   },
   "item": [
     {
-      "name": "Profile",
+      "name": "Auth v1.1",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"demo@example.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Refresh",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{refreshToken}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/auth/refresh"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/logout"
+          }
+        },
+        {
+          "name": "Get Session",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/auth/session"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profile v1",
       "item": [
         {
           "name": "Get Me",
@@ -46,7 +98,34 @@
       ]
     },
     {
-      "name": "Tournaments",
+      "name": "Profile v1.1",
+      "item": [
+        {
+          "name": "Get Me v1.1",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/me"
+          }
+        },
+        {
+          "name": "Patch Me v1.1",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_name\": \"Jugador Demo v1.1\",\n  \"phone\": \"+57 300 0000000\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tournaments v1",
       "item": [
         {
           "name": "List Tournaments",
@@ -65,7 +144,28 @@
       ]
     },
     {
-      "name": "Registrations",
+      "name": "Tournaments v1.1 Public",
+      "item": [
+        {
+          "name": "List Tournaments v1.1",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tournaments?limit=10&q=open"
+          }
+        },
+        {
+          "name": "Get Tournament By Id v1.1",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tournaments/{{tournamentId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Registrations v1",
       "item": [
         {
           "name": "Create Registration",
@@ -98,7 +198,40 @@
       ]
     },
     {
-      "name": "Schedule",
+      "name": "Registrations v1.1",
+      "item": [
+        {
+          "name": "Create Registration v1.1",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tournament_category_id\": \"00000000-0000-0000-0000-000000000000\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/tournaments/{{tournamentId}}/registrations"
+          }
+        },
+        {
+          "name": "List My Registrations v1.1",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/me/registrations?state=all&limit=10&q=ref"
+          }
+        },
+        {
+          "name": "Delete My Registration v1.1",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/me/registrations/{{registrationId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schedule v1",
       "item": [
         {
           "name": "List My Schedule",
@@ -112,6 +245,67 @@
           "request": {
             "method": "GET",
             "url": "{{baseUrl}}/api/v1/tournaments/{{tournamentId}}/schedule?limit=10&q=final"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schedule v1.1",
+      "item": [
+        {
+          "name": "List My Schedule v1.1",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/me/schedule?limit=10&q=court"
+          }
+        },
+        {
+          "name": "List Tournament Schedule v1.1",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tournaments/{{tournamentId}}/schedule?limit=10&q=final"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rankings v1.1",
+      "item": [
+        {
+          "name": "List Rankings",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/rankings?limit=10&ranking_type=academy"
+          }
+        },
+        {
+          "name": "Get Ranking By Id",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/rankings/{{rankingId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Academies v1.1",
+      "item": [
+        {
+          "name": "List Academies",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/academies?limit=10&q=club"
+          }
+        },
+        {
+          "name": "Get Academy By Id",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/academies/{{academyId}}"
           }
         }
       ]

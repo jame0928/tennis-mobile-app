@@ -1,4 +1,5 @@
 import '../../../../core/network/api_client.dart';
+import '../../../../core/config/api_paths.dart';
 import '../../../../core/network/pagination_meta.dart';
 import '../../domain/entities/registration.dart';
 import '../query/registration_query.dart';
@@ -19,7 +20,7 @@ class RegistrationRemoteDataSource {
     }..removeWhere((_, value) => value == null);
 
     final response = await client.post(
-      '/api/v1/tournaments/$tournamentId/registrations',
+      ApiPaths.tournamentRegistrations(tournamentId),
       body: body,
     );
     return _fromJson(response.data as Map<String, dynamic>);
@@ -29,7 +30,7 @@ class RegistrationRemoteDataSource {
     RegistrationQuery query,
   ) async {
     final response = await client.get(
-      '/api/v1/me/registrations',
+      ApiPaths.myRegistrations(),
       query: query.toParams(),
     );
     final list = (response.data as List<dynamic>)
@@ -40,7 +41,7 @@ class RegistrationRemoteDataSource {
 
   Future<String> withdrawRegistration(String registrationId) async {
     final response = await client.delete(
-      '/api/v1/me/registrations/$registrationId',
+      ApiPaths.myRegistrationDetail(registrationId),
     );
     final data = response.data as Map<String, dynamic>;
     return data['status'] as String? ?? 'withdrawn';

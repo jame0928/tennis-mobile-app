@@ -15,6 +15,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navTournaments => 'Torneos';
 
   @override
+  String get navRankings => 'Rankings';
+
+  @override
+  String get navAcademies => 'Academias';
+
+  @override
   String get navRegistrations => 'Inscripciones';
 
   @override
@@ -22,6 +28,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navProfile => 'Perfil';
+
+  @override
+  String get navLogin => 'Login';
 
   @override
   String get routeNotFound => 'Ruta no encontrada';
@@ -46,6 +55,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonRequired => 'Campo obligatorio';
+
+  @override
+  String get authGuardRedirectingMessage =>
+      'Se requiere iniciar sesion. Redirigiendo...';
 
   @override
   String get statusUnknown => 'Desconocido';
@@ -252,6 +265,79 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scheduleCourtTbd => 'Cancha por definir';
+
+  @override
+  String get loginTitle => 'Iniciar sesion';
+
+  @override
+  String get loginEmail => 'Correo electronico';
+
+  @override
+  String get loginPassword => 'Contrasena';
+
+  @override
+  String get loginSubmit => 'Ingresar';
+
+  @override
+  String get loginSubmitting => 'Ingresando...';
+
+  @override
+  String get loginInvalidEmail => 'Correo invalido';
+
+  @override
+  String get loginInvalidSession =>
+      'No se pudo validar la sesion. Intenta nuevamente.';
+
+  @override
+  String get rankingsTitle => 'Rankings';
+
+  @override
+  String get rankingsSearchHint => 'Buscar rankings';
+
+  @override
+  String get rankingsErrorLoading => 'No se pudieron cargar los rankings';
+
+  @override
+  String get rankingsEmpty => 'No se encontraron rankings';
+
+  @override
+  String get rankingsDetailTitle => 'Detalle del ranking';
+
+  @override
+  String get rankingsTypeLabel => 'Tipo';
+
+  @override
+  String get rankingsCategoryLabel => 'Categoria';
+
+  @override
+  String get rankingsEntriesTitle => 'Entradas';
+
+  @override
+  String get academiesTitle => 'Academias';
+
+  @override
+  String get academiesSearchHint => 'Buscar academias';
+
+  @override
+  String get academiesErrorLoading => 'No se pudieron cargar las academias';
+
+  @override
+  String get academiesEmpty => 'No se encontraron academias';
+
+  @override
+  String get academiesDetailTitle => 'Detalle de academia';
+
+  @override
+  String get academiesUnknownLocation => 'Ubicacion no disponible';
+
+  @override
+  String get academiesEmailLabel => 'Email';
+
+  @override
+  String get academiesPhoneLabel => 'Telefono';
+
+  @override
+  String get academiesAddressLabel => 'Direccion';
 
   @override
   String get errorSessionExpired =>

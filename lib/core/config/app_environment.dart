@@ -5,6 +5,8 @@ class AppEnvironment {
 
   static Environment current = Environment.staging;
 
+  static const apiV1BasePath = '/api/v1';
+
   static String get baseUrl {
     switch (current) {
       case Environment.production:
